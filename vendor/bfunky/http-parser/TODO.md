@@ -1,0 +1,5 @@
+- Handle forwaarding headers HTTP/1.1 100 Continue
+- handle duplicated http fields eg. Set-Cookie: ZDEDebuggerPresent=php,phtml,php3; path=/
+- parsing on json and associative array
+- use get method to return header values too
+- for version 2 use a collection
