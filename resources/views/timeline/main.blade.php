@@ -54,7 +54,7 @@
                         </div>
                         @if($dayTimeline->attached_photo)
                           <br>
-                          <img src="{{ $dayTimeline->attached_photo }}" width="600">
+                          <img class="img-fluid" src="{{ $dayTimeline->attached_photo }}" width="100% \ 9">
                           <br><br>
                         @endif
                       </div>
@@ -83,7 +83,7 @@
                         </div>
                         @if($dayTimeline->attached_photo)
                           <br>
-                          <img src="{{ $dayTimeline->attached_photo }}" width="600">
+                          <img class="img-fluid" src="{{ $dayTimeline->attached_photo }}" width="100% \ 9">
                           <br><br>
                         @endif
                       </div>
