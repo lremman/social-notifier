@@ -2,14 +2,20 @@
 <html >
 <head>
   <meta charset="UTF-8">
-  <title>Flat HTML5/CSS3 Login Form</title>
+  <title>SocialNotifier</title>
   <link rel="stylesheet" type="text/css" href="{{ url('theme/auth/css/style.css') }}" />
+  @include('parts.favicon')
+  @include('parts.og')
 </head>
 
 <body>
-  <div class="login-page">
+<div class="login-page">
+
+  
   <div class="form">
 
+    <img src="{{ url('images/logo_mini.png') }}" width="150">
+    <br><br>
     <form class="register-form" method="POST" action="{{ action('Auth\RegisterController@postRegister') }}" data-confirm-sms="{{ action('Auth\RegisterController@postSmsConfirmation') }}">
       <div class="form-group">
         <input type="text" name="name" placeholder="{{ _('Імя') }}"/>

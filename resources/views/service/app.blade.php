@@ -3,11 +3,13 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>@yield('title', 'Globalize')</title>
+    <title>@yield('title', 'SocialNotifier')</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     @include('service.opengraph')
     @include('service.css')
+    @include('parts.favicon')
+    @include('parts.og')
   </head>
   <body>
 

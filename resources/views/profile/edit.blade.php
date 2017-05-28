@@ -29,7 +29,7 @@
               </div>
             </div>
 
-            <div class="form-group">
+            <div class="form-group {{ $viberData ? 'has-success' : 'has-warning' }}">
               <label for="setupViber" class="col-lg-2 control-label">Viber <i class="fa fa-phone-square"></i></label>
               <div class="col-lg-10">
                 <input type="text" value="{{ $viberData ? _('Аккаунт налаштовано: ') . $viberData->name : _('Аккаунт Viber не налаштовано. Клікніть для налаштування') }}" class="form-control" id="setupViber" placeholder="Телефон" readonly @if(!$viberData) data-toggle="modal" data-target="#addViberForm" @endif>

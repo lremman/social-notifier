@@ -9,14 +9,13 @@
       </button>
     </div>
     <div class="navbar-collapse collapse" id="navbar-main">
-{{--       <ul class="nav navbar-nav">
+      <ul class="nav navbar-nav">
         <li>
-          <a href="../help/">Help</a>
+          <a href="{{ action('FriendController@getList') }}">{{ _('Мої дузі') }}</a>
         </li>
         <li>
-          <a href="http://news.bootswatch.com">Blog</a>
-        </li> --}}
-        
+          <a href="{{ action('ProfileController@editProfile') }}">{{ _('Мій профіль') }}</a>
+        </li>
       </ul>
 
       <ul class="nav navbar-nav navbar-right">
