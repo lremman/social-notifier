@@ -39,7 +39,7 @@
     </form>
   </div>
 </div>
-  <script src='http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
+  <script src="{{ url('js/jquery-3.1.1.min.js') }}"></script>
   <script>
     window.csrf_token = '{{ csrf_token() }}';
     window.csrf_token_url = '{{ action('ServiceController@getCsrfToken') }}';
