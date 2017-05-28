@@ -29,6 +29,10 @@ abstract class AbstractEvent
 	{
 		$users = $this->loadUsers($this->getMorphClass());
 
+		if (empty($users)) {
+			return false;
+		}
+
 		$this->response = $this->getResponse($users);
 
 		foreach ($this->response as $responseUser) {
