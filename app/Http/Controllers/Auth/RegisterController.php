@@ -152,7 +152,7 @@ class RegisterController extends Controller
 
         if ($user && Auth::loginUsingId($user->id)) {
             $this->clearSession(SMS::formatPhone($request->get('telephone')));
-            app('App\Http\Controllers\TimelineController')->createFirstNotification();
+
             return ajaxResponse([
                 'authorized' => true,
                 'status' => 'success',
