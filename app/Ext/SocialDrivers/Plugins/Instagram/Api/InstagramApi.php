@@ -17,7 +17,7 @@ class InstagramApi extends AbstractApi
 
 		'getFromUrl' => [
 			'raw' => '_getFromUrl',
-			'minutes' => 4,
+			'minutes' => 1,
 		],
 		'call' => [
 			'raw' => '_call',

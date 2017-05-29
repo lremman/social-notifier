@@ -38,12 +38,6 @@ class SocialsListen extends Command
      */
     public function handle()
     {
-        $vkontakte = Social::get('vkontakte');
-
-        $vkontakte->listen();
-
-        $instagram = Social::get('instagram');
-
-        $instagram->listen();
+        Social::listen();
     }
 }

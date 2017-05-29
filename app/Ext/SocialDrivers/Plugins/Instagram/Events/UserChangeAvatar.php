@@ -17,7 +17,7 @@ class UserChangeAvatar extends AbstractEvent
 	 */
 	public function getSettingTitle()
 	{
-		return 'Користувач змінив фотографію профілю';
+		return 'Змінив аватар';
 	}
 
 	/**

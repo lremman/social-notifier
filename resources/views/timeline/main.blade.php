@@ -1,7 +1,14 @@
 @extends('service.app')
 
+@section('style')
+  <style type="text/css">
+      table {border: none;}
+  </style>
+@endsection
+
 @section('content')
-      <!-- Buttons
+
+     <!-- Buttons
       ================================================== -->
       <div class="container">
         <div class="page-header">
@@ -41,7 +48,7 @@
               <div class="col-md-8">
                 <div class="text-center">
                   <div class="bs-component">
-                      <div class="alert alert-dismissible alert-success">
+                      <div class="well">
                         <div class="text-left">
                           <button type="button" class="close" data-dismiss="alert">×</button>
                           <table class="table">
@@ -56,7 +63,7 @@
                         </div>
                         @if($dayTimeline->attached_photo)
                           <br>
-                          <img class="img-fluid" src="{{ $dayTimeline->attached_photo }}" width="100% \ 9">
+                          <img class="img-fluid" src="{{ $dayTimeline->attached_photo }}" width="70%">
                           <br><br>
                         @endif
                       </div>
@@ -69,22 +76,26 @@
               <div class="col-md-8">
                 <div class="text-center">
                   <div class="bs-component">
-                      <div class="alert alert-dismissible alert-{{ array_get($colors, rand(0,3)) }}">
+                      <div class="well">
                         <div class="text-left">
                           <button type="button" class="close" data-dismiss="alert">×</button>
                           <table class="table">
                             <tbody>
                             <tr>
                               <td width="50"><img src="{{ $dayTimeline->avatar_image }}" width="40" height="40"></td>
-                              <td ><h4><a class="alert-link" href="#">{{ data_get($dayTimeline, 'friend.first_name') }}&nbsp;{{ data_get($dayTimeline, 'friend.last_name') }}</a>&nbsp;|&nbsp;{{ $dayTimeline->created_at->format('H:i') }}&nbsp;|&nbsp;<i class="{{ config('socials.' . $dayTimeline->provider . '.icon_class')}}"></i></h4></td>
+                              <td >
+                                <h4>
+                                  <a class="alert-link" href="#">{{ data_get($dayTimeline, 'friend.first_name') }}&nbsp;{{ data_get($dayTimeline, 'friend.last_name') }}</a>&nbsp;|&nbsp;{{ $dayTimeline->created_at->format('H:i') }}&nbsp;|&nbsp;<i class="{{ config('socials.' . $dayTimeline->provider . '.icon_class')}}"></i>
+                                </h4>
+                                </td>
                             </tr>
                             </tbody>
                           </table>
-                          <p>{!! $dayTimeline->description !!}</p>
+                          <p><strong>{!! nl2br($dayTimeline->description) !!}</strong></p>
                         </div>
                         @if($dayTimeline->attached_photo)
                           <br>
-                          <img class="img-fluid" src="{{ $dayTimeline->attached_photo }}" width="100% \ 9">
+                          <img class="img-fluid" src="{{ $dayTimeline->attached_photo }}" width="70%">
                           <br><br>
                         @endif
                       </div>

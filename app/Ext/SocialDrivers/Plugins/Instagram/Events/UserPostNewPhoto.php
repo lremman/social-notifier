@@ -16,7 +16,7 @@ class UserPostNewPhoto extends UserChangeAvatar
 	 */
 	public function getSettingTitle()
 	{
-		return 'Користувач опублікував нову світлину';
+		return 'Опублікував світлину';
 	}
 
 	/**
@@ -56,7 +56,7 @@ class UserPostNewPhoto extends UserChangeAvatar
 	{
 		$response = $this->api()->call('users.media.get', [
 			'user_ids' => $users,
-			'fields' => ['images','user'],
+			'fields' => ['images','user', 'caption'],
 			'limit' => 1,
 		]);
 
@@ -140,7 +140,8 @@ class UserPostNewPhoto extends UserChangeAvatar
 			    'attached_photo' => array_get($response, '0.images.standard_resolution.url'),
 			    'provider' => $this->social->getProvider(),
 			    'page_url' => 'https://www.instagram.com/' . data_get($response, '0.user.username'),
-			    'description' => array_get($response, '0.user.full_name') . ' ' . _('опублікував нову світлину'),
+			    'description' => array_get($response, '0.user.full_name') . ' ' . _('опублікував нову світлину') . "\r\n" .
+			    array_get($response, '0.caption.text'),
 			]);
 
 			$this->sendSms($response, $timeline);

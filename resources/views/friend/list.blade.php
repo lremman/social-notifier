@@ -34,33 +34,49 @@
                     <tr>
                         <th></th>
                         <th>Ім'я</th>
-                        <th>Прізвище</th>
                         <th>Аккаунти</th>
-                        <th></th>
+                        <th width=50></th>
                     </tr>
                 </thead>
                 <tbody>
+                    @if(!$friends->count())
+                        <tr>
+                            <td colspan="5" class="text-center">
+                                У вашому профілі ще не створено жодного друга. <a href="#" data-toggle="modal" data-target="#createFriendModal">
+                        Створити зараз
+                        </a>?
+                            </td>
+                        </tr>
+                    @endif
                     @foreach($friends as $friend)
                         <tr>
                             <td width="60">
                                 @if($social = $friend->socials->first())
-                                    <img src="{{ $social->remote_image }}" width="50" height="50">
+                                    <a href="{{ action('FriendController@getSettings', $friend->id) }}" class="btn btn-link">
+                                        <img src="{{ $social->remote_image }}" width="50" height="50">
+                                    </a>
                                 @endif
                             </td>
                             <td>
-                                {{ $friend->first_name }}
+                                <a href="{{ action('FriendController@getSettings', $friend->id) }}">
+                                    {{ $friend->first_name }}
+                                    {{ $friend->last_name }}
+                                </a>
                             </td>
                             <td>
-                                {{ $friend->last_name }}
-                            </td>
-                            <td>
+                                @php $socialsCount = 0; @endphp
                                 @foreach($friend->socials as $social)
-                                    <i class="{{ config('socials.' . $social->provider . '.icon_class') }}"></i>
+                                    @php $socialsCount++; @endphp
+                                    <span class="label label-primary"><i class="{{ config('socials.' . $social->provider . '.icon_class') }}"></i> {{ config('socials.' . $social->provider . '.title') }}</span><br>
                                 @endforeach
+                                @if(!$socialsCount)
+                                    Аккаунти не налаштовані. <a href="{{ action('FriendController@getSettings', $friend->id) }}">Налаштувати?
+                                    </a>
+                                @endif
                             </td>
 
                             <td>
-                                <a href="{{ action('FriendController@getSettings', $friend->id) }}" class="btn btn-link"><i class="fa fa-edit"></i> <br> налаштувати</a>
+                                <a href="{{ action('FriendController@getSettings', $friend->id) }}" class="btn btn-link"><i class="fa fa-edit"></i></a>
                             </td>
                            
                         </tr>

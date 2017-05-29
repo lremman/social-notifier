@@ -41,7 +41,7 @@ class Timeline extends Model
     		'name' => data_get($this, 'friend.first_name') . ' ' . data_get($this, 'friend.last_name'),
     		'avatar' => $this->avatar_image,
     		'user' => User::find(data_get($this, 'friend.user.id')),
-    		'message' => $this->description,
+    		'message' => str_limit($this->description, 110),
     	]);
     }
 
@@ -51,7 +51,7 @@ class Timeline extends Model
     		'name' => data_get($this, 'friend.first_name') . ' ' . data_get($this, 'friend.last_name'),
     		'avatar' => $this->avatar_image,
     		'user' => User::find(data_get($this, 'friend.user.id')),
-    		'message' => $this->description,
+    		'message' => str_limit($this->description, 110),
     		'media' => $this->attached_photo,
     	]);
     }

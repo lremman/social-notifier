@@ -14,7 +14,7 @@ class Friend extends Model
      * @var array
      */
     protected $fillable = [
-        'first_name', 'last_name', 'photo_storage_id', 'user_id'
+        'first_name', 'last_name', 'photo_storage_id', 'user_id', 'description'
     ];
 
     /**

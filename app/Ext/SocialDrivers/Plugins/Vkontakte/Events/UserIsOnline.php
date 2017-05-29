@@ -17,7 +17,7 @@ class UserIsOnline extends AbstractEvent
 	 */
 	public function getSettingTitle()
 	{
-		return 'Користувач увійшов в мережу';
+		return 'Увійшов';
 	}
 
 	/**

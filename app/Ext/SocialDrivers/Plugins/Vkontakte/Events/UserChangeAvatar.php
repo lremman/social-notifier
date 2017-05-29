@@ -16,7 +16,7 @@ class UserChangeAvatar extends UserIsOnline
 	 */
 	public function getSettingTitle()
 	{
-		return 'Користувач змінив фотографію профілю';
+		return 'Змінив аватар';
 	}
 
 	/**

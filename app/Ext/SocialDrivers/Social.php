@@ -17,4 +17,15 @@ class Social extends AbstractSocial
             'instagram' => Plugins\Instagram\Instagram::class,
         ];
     }
+
+    /**
+     * 
+     */
+    public function listen()
+    {
+        foreach($this->register() as $socialKey => $socialClass) {
+            $social = $this->get($socialKey);
+            $social->listen();
+        }
+    }
 }

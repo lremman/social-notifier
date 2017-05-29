@@ -29,6 +29,7 @@ abstract class AbstractEvent
 	{
 		$users = $this->loadUsers($this->getMorphClass());
 
+
 		if (empty($users)) {
 			return false;
 		}

@@ -13,7 +13,7 @@ class UserIsOffline extends UserIsOnline
 	 */
 	public function getSettingTitle()
 	{
-		return 'Користувач покинув мережу';
+		return 'Вийшов';
 	}
 
 	/**

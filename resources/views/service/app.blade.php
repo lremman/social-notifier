@@ -10,6 +10,7 @@
     @include('service.css')
     @include('parts.favicon')
     @include('parts.og')
+    @yield('style')
   </head>
   <body>
 
