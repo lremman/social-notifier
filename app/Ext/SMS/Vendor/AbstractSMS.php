@@ -4,6 +4,7 @@ namespace App\Ext\SMS\Vendor;
 
 use BFunky\HttpParser\HttpParser;
 use App\Ext\SMS\Vendor\SendingSMSException;
+use Guzzle\Http\Client;
 
 abstract class AbstractSMS {
 
@@ -11,11 +12,9 @@ abstract class AbstractSMS {
 	/**
 	 * @var string
 	 */
-	private $username;
+	private $login;
 
-	private $userid;
-
-	private $handle;
+	private $password;
 
 	protected $from;
 
@@ -25,7 +24,7 @@ abstract class AbstractSMS {
 
 	protected $response = [];
 
-	public $baseUrl = 'https://api.budgetsms.net/sendsms';
+	public $baseUrl = 'http://sms-fly.com/api/api.noai.php';
 
 	/**
 	 * 
@@ -37,51 +36,33 @@ abstract class AbstractSMS {
 
 	protected function setAuthData()
 	{
-		$this->username = config('services.budgetSMS.username');
-		$this->userid = config('services.budgetSMS.user_id');
-		$this->handle = config('services.budgetSMS.handle');
-
+		$this->login = config('services.smsfly.login');
+		$this->password = config('services.smsfly.password');
 	}
 
 	/**
 	 * 
 	 */
-	private function sendData($data)
+	private function sendData($dataXml)
 	{
-		$url = $this->baseUrl . '?' . http_build_query($data);
+		$client = new Client();
 
-		$curl = curl_init();
-		curl_setopt($curl, CURLOPT_URL, $url);
-		curl_setopt($curl, CURLOPT_RETURNTRANSFER, true); 
-		curl_setopt($curl, CURLOPT_HEADER, true);
-		curl_setopt($curl, CURLOPT_HTTPGET, true);
-		curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
-		curl_setopt($curl, CURLOPT_DNS_USE_GLOBAL_CACHE, false );
-		curl_setopt($curl, CURLOPT_DNS_CACHE_TIMEOUT, 2 );
-		$result = curl_exec($curl);
+		$request = $client->post(
+			$this->baseUrl,
+			[
+				'Content-Type' => 'text/xml',
+			],
+			$dataXml
+		);
+		$request->setAuth($this->login, $this->password);
 
-		curl_close($curl);
+		$response = $request->send();
 
-		$this->response = $this->parseResponse($result);
-
+		$this->response = [
+			'success' => $response->getStatusCode() == 200 ? true : false,
+		];
 
 		return $this;
-	}
-
-	/**
-	 * 
-	 */
-	public function parseResponse(string $response)
-	{
-		if ( preg_match('/ERR (\w+)/', $response, $m) ) {
-   			$this->returnException(array_get($m, 1));
-		} elseif ( preg_match('/OK (\w+)/', $response, $m) ) {
-			return [
-				'success' => true,
-				'message' => 'success',
-				'code' => $m[1],
-			];
-		}
 	}
 
 	/**
@@ -89,16 +70,33 @@ abstract class AbstractSMS {
 	 */
 	public function send()
 	{
-		$response = $this->sendData([
-			'username' => $this->username,
-			'userid' => $this->userid,
-			'handle' => $this->handle,
+		$data = $this->makeXml([
 			'msg' => $this->message,
 			'from' => $this->from,
 			'to' => $this->number,
 		]);
 
+		$response = $this->sendData($data);
+
 		return $this;
+	}
+
+	/**
+	 * 
+	 */
+	public function makeXml($data)
+	{
+		$xml = 
+			'<?xml version="1.0" encoding="utf-8"?>' .
+			'<request>' .
+			   '<operation>SENDSMS</operation>' .
+			   '<message start_time="AUTO" end_time="AUTO" lifetime="4" desc="SocialNotifier registration" source="' . array_get($data, 'from') . '">' .
+			      '<recipient>' . array_get($data, 'to') . '</recipient>' .	
+			      '<body>' . array_get($data, 'msg') . '</body>' .
+			   '</message>' .
+			'</request>'
+		;
+		return $xml;
 	}
 
 	/**
@@ -127,6 +125,7 @@ abstract class AbstractSMS {
 	public function setFrom(string $from)
 	{
 		$this->from = $from;
+		return $this;
 	}
 
 	/**
@@ -135,6 +134,7 @@ abstract class AbstractSMS {
 	public function setNumber(int $number)
 	{
 		$this->number = $number;
+		return $this;
 	}
 
 	/**
@@ -143,6 +143,7 @@ abstract class AbstractSMS {
 	public function setMessage(string $message)
 	{
 		$this->message = $message;
+		return $this;
 	}
 
 	/**
@@ -169,63 +170,4 @@ abstract class AbstractSMS {
 		return $this->message;
 	}
 
-	/**
-	 * 
-	 */
-	protected function returnException($code) 
-	{
-		$errors = [
-			'1001'	=> 'Not enough credits to send messages',
-			'1002'	=> 'Identification failed. Wrong credentials',
-			'1003'	=> 'Account not active, contact BudgetSMS',
-			'1004'	=> 'This IP address is not added to this account. No access to the API',
-			'1005'	=> 'No handle provided',
-			'1006'	=> 'No UserID provided',
-			'1007'	=> 'No Username provided',
-			'2001'	=> 'SMS message text is empty',
-			'2002'	=> 'SMS numeric senderid can be max. 16 numbers',
-			'2003'	=> 'SMS alphanumeric sender can be max. 12 characters',
-			'2004'	=> 'SMS senderid is empty or invalid',
-			'2005'	=> 'Destination number is too short',
-			'2006'	=> 'Destination is not numeric',
-			'2007'	=> 'Destination is empty',
-			'2008'	=> 'SMS text is not OK (check encoding?)',
-			'2009'	=> 'Parameter issue (check all mandatory parameters, encoding, etc.)',
-			'2010'	=> 'Destination number is invalidly formatted',
-			'2011'	=> 'Destination is invalid',
-			'2012'	=> 'SMS message text is too long',
-			'2013'	=> 'SMS message is invalid',
-			'2014'	=> 'SMS CustomID is used before',
-			'2015'	=> 'Charset problem',
-			'2016'	=> 'Invalid UTF-8 encoding',
-			'2017'	=> 'Invalid SMSid',
-			'3001'	=> 'No route to destination. Contact BudgetSMS for possible solutions',
-			'3002'	=> 'No routes are setup. Contact BudgetSMS for a route setup',
-			'3003'	=> 'Invalid destination. Check international mobile number formatting',
-			'4001'	=> 'System error, related to customID',
-			'4002'	=> 'System error, temporary issue. Try resubmitting in 2 to 3 minutes',
-			'4003'	=> 'System error, temporary issue.',
-			'4004'	=> 'System error, temporary issue. Contact BudgetSMS',
-			'4005'	=> 'System error, permanent',
-			'4006'	=> 'Gateway not reachable',
-			'4007'	=> 'System error, contact BudgetSMS',
-			'5001'	=> 'Send error, Contact BudgetSMS with the send details',
-			'5002'	=> 'Wrong SMS type',
-			'5003'	=> 'Wrong operator',
-			'6001'	=> 'Unknown error',
-			'7001'	=> 'No HLR provider present, Contact BudgetSMS.',
-			'7002'	=> 'Unexpected results from HLR provider',
-			'7003'	=> 'Bad number format',
-			'7901'	=> 'Unexpected error. Contact BudgetSMS',
-			'7902'	=> 'HLR provider error. Contact BudgetSMS',
-			'7903'	=> 'HLR provider error. Contact BudgetSMS',
-		];
-
-		if($errorText = array_get($errors, $code)) {
-			throw new SendingSMSException($errorText);
-		}
-
-		throw new SendingSMSException('BudgetSMS API error');
 	}
-
-}

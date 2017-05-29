@@ -59,7 +59,7 @@
                                 @endforeach
                             </td>
 
-                            <td width="100">
+                            <td>
                                 <a href="{{ action('FriendController@getSettings', $friend->id) }}" class="btn btn-link"><i class="fa fa-edit"></i> <br> налаштувати</a>
                             </td>
                            

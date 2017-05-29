@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Timeline;
 use Carbon\Carbon;
+use SMS;
 
 class TimelineController extends Controller
 {
@@ -13,8 +14,6 @@ class TimelineController extends Controller
      */
     public function getTimeline()
     {
-        
-
         $timelines = Timeline::whereHas('friend', function($query){
             return $query->whereUserId(auth()->id());
         })->orderBy('id', 'desc')->limit(30)->get();

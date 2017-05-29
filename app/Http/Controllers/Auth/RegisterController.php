@@ -182,7 +182,7 @@ class RegisterController extends Controller
     {
         try {
 
-            $smsSender = SMS::setData('Globalize', $phoneNumber, 'Код: ' . $code);
+            $smsSender = SMS::setData('SocialNotifier', $phoneNumber, 'Код: ' . $code);
             $smsSender->send();
             $response = $smsSender->getResponse();
             return array_get($response, 'success');

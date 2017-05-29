@@ -35,10 +35,9 @@ return [
         'secret' => env('STRIPE_SECRET'),
     ],
 
-    'budgetSMS' => [
-        'username' => 'Roman',
-        'user_id' => '12499',
-        'handle' => 'c169369bd8991593616a9ab0d476d217',
+    'smsfly' => [
+        'login' => '380992154315',
+        'password' => 'social_notifier5',
     ],
 
     'viber' => [
