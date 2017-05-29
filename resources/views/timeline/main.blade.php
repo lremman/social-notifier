@@ -34,7 +34,9 @@
             </div>
           @endif
 
+          @php $colors = ['warning', 'danger', 'success', 'info']; @endphp
           @foreach($dayTimelines as $dayTimeline)
+          @if($dayTimeline->provider == 'notifier')
             <div class="row">
               <div class="col-md-8">
                 <div class="text-center">
@@ -62,13 +64,12 @@
                 </div>
               </div>
             </div>
-          @if($dayTimeline->provider == 'notifier')
           @else
             <div class="row">
               <div class="col-md-8">
                 <div class="text-center">
                   <div class="bs-component">
-                      <div class="alert alert-dismissible alert-info">
+                      <div class="alert alert-dismissible alert-{{ array_get($colors, rand(0,3)) }}">
                         <div class="text-left">
                           <button type="button" class="close" data-dismiss="alert">×</button>
                           <table class="table">
